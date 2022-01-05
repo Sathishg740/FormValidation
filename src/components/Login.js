@@ -1,26 +1,15 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom';
+import './style.css'
 import SignUp from './SignUp';
 // import SignUp from './SignUp';
 
 
 function Login(props) {
-    const[userFormData,setUserFormData]=useState([])
-    
-    let getUserData=(userData)=>{
-      
-      console.log('dta',userData);
-      const userFormDataCopy=[...userFormData]
-     
-      userFormDataCopy.push(userData)
-      
-      setUserFormData(userFormDataCopy)
-    //   console.log('formdata',userFormDataCopy);
-
-    }
 
     const [userData, setuserData] = useState({
-       
+      email:'',
+      password:'' 
 })
 console.log(userData);
 
@@ -75,7 +64,7 @@ let saveData=(event)=>{
     
     validatePwd();
     if(validateEmail() && validatePwd()){
-        getUserData(userData)
+       props.getUserData(userData)
         // event.preventDefault();
         //clearing the form
         setuserData({
@@ -96,7 +85,7 @@ let saveData=(event)=>{
 
     return (
         <div>
-            {/* <SignUp getUserData={getUserData}/> */}
+        
            
             <h1>Login</h1>
             <div className='container'>

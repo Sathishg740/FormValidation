@@ -1,14 +1,16 @@
 import React from 'react'
 import { useState } from "react";
 import { withRouter } from 'react-router-dom'
+import './style.css'
 
 function SignUp(props) {
     const [userData, setuserData] = useState({
         email:'',
         Name:'',
-        password:''
+        password:'',
+        confirmPassword:''
 })
-
+console.log('singupdata',userData);
 const [emailError, setemailError] = useState("")
 const validateEmail=()=>{
     if(userData.email){
@@ -60,6 +62,24 @@ const validatePwd=()=>{
         return false; 
 };
 
+const [cpwdError, setcpwdError] = useState("")
+const validateConfirmPwd=()=>{
+    if(userData.confirmPassword)
+    {
+        if(userData.confirmPassword===userData.password)
+        {
+            setcpwdError("");
+            return true
+        }
+        else{
+            setcpwdError("password and confirm password does not match")
+        }
+    }else{
+        setcpwdError("please enter confirm password");
+    }return false
+};
+
+
 let updateUserData=(event)=>{
     // event.preventDefault();
     setuserData({
@@ -74,20 +94,24 @@ let saveData=(event)=>{
     validateEmail();
     validateName();
     validatePwd();
-    if(validateEmail()&& validateName() && validatePwd()){
-        props.getUserData(userData)
+    validateConfirmPwd();
+    if(validateEmail()&& validateName() && validatePwd() && validateConfirmPwd()){
+       
         // event.preventDefault();
         //clearing the form
         setuserData({
             email:'',
             Name:'',
-            password:''
+            password:'',
+            confirmPassword:''
         });
     }
    
 };
 
-
+let handleSubmit=(event)=>{
+    event.preventDefault();
+}
     let navigateToLogin=()=>{
         // console.log(props);
         props.history.push('/login')
@@ -95,6 +119,7 @@ let saveData=(event)=>{
     return (
         <div>
             <h1>Signup </h1>
+            <form onSubmit={handleSubmit}>
             <div className='container'>
             <div className="mb-3">
                     <input
@@ -129,9 +154,21 @@ let saveData=(event)=>{
                     />
                 {pwdError&&<div className="errMsg">{pwdError}</div>}
                 </div>
+                <div className="mb-3">
+                    <input
+                    name="confirmPassword"
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter confirm Password"
+                    value={userData.confirmPassword}
+                    onChange={(event)=>{updateUserData(event)}}
+                    />
+                {cpwdError&&<div className="errMsg">{cpwdError}</div>}
+                </div>
                 <button type="submit" className="btn btn-primary" onClick={saveData}>SignUp</button>
             </div>
             <h4 style={{cursor:'pointer'}} onClick={navigateToLogin}>Already have an account? Login here !</h4>
+        </form>
         </div>
     )
 }

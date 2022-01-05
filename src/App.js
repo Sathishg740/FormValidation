@@ -8,6 +8,12 @@ import Home from "./components/Home";
 import { useState } from 'react';
 
 function App() {
+const [getLogin, setgetLogin] = useState([])
+console.log(getLogin);
+
+let getUserData=(userData)=>{
+setgetLogin(...getLogin,userData)
+}
   return (
     <Router>
       <div className="App">
@@ -15,7 +21,7 @@ function App() {
 
         <Switch>
           <Route exact path='/login'>
-            <Login/>
+            <Login getUserData={getUserData}/>
           </Route>
           <Route exact path='/signup'>
             <SignUp />
